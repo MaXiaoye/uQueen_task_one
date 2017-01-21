@@ -7,20 +7,22 @@ import java.io.InputStreamReader;
 public class main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		char[][] board={{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
-		 BufferedReader strin=new BufferedReader(new InputStreamReader(System.in));  
+		// Define the grid of chars 
+		char[][] charGrid={{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
+		BufferedReader strin=new BufferedReader(new InputStreamReader(System.in));  
         
-         try {
+        try {
         	while(true){
-            System.out.print("Please input a String. Exit with null and Enter.");  
-			String word= strin.readLine();
-			if(word.length()==0)
+            System.out.print("Please input a String. Exit with null and Enter:\r\n");  
+			String inputString= strin.readLine();
+			
+			//If input is null then exit.
+			if(inputString.length()==0)
 			{
-				 System.out.print("Exit£¡");  
+				System.out.print("Exit£¡");  
 				return;
 			}
-			boolean flag=search.exist(board, word);
+			boolean flag=search.initialSearch(charGrid, inputString);
 			System.out.println(flag);
         	}
 		} catch (IOException e) {

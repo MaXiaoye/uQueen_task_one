@@ -1,62 +1,79 @@
 package com.taskone.main;
 
+//Search if the word exists in provided grid
+
 public class search {
 
-static boolean searchFunction(char[][] board, int i,int j,String str,boolean[][] mask){  
-        if (str.length()==0){return true;}  
+static boolean searchInGrid(char[][] charGrid, int i,int j,String inputString,boolean[][] shadowFlag){  
+        if (inputString.length()==0){return true;} // The last char in input is found. Return true.  
         else{  
-            if ((i>0)&&(board[i-1][j]==str.charAt(0))&&(mask[i-1][j]==false)){  
-                mask[i-1][j]=true;  
-                if (searchFunction(board,i-1,j,str.substring(1),mask)){  
+        	
+        	//If the left char in grid equals to the target. 
+            if ((i>0)&&(charGrid[i-1][j]==inputString.charAt(0))&&(shadowFlag[i-1][j]==false)){
+            	
+            	//The char in grid is searched. Can't be searched again.
+            	shadowFlag[i-1][j]=true;
+            	
+            	//recursion
+                if (searchInGrid(charGrid,i-1,j,inputString.substring(1),shadowFlag)){  
                     return true;  
                 }  
-                mask[i-1][j]=false;  
-            }  
-            if ((i<board.length-1)&&(board[i+1][j]==str.charAt(0))&&(mask[i+1][j]==false)){  
-                mask[i+1][j]=true;  
-                if (searchFunction(board,i+1,j,str.substring(1),mask)){  
+                shadowFlag[i-1][j]=false;  
+            }
+            
+            //If the right char in grid equals to the target. 
+            if ((i<charGrid.length-1)&&(charGrid[i+1][j]==inputString.charAt(0))&&(shadowFlag[i+1][j]==false)){  
+            	shadowFlag[i+1][j]=true;  
+                if (searchInGrid(charGrid,i+1,j,inputString.substring(1),shadowFlag)){  
                     return true;  
                 }  
-                mask[i+1][j]=false;  
+                shadowFlag[i+1][j]=false;  
             }  
-            if ((j>0)&&(board[i][j-1]==str.charAt(0))&&(mask[i][j-1]==false)){  
-                mask[i][j-1]=true;  
-                if (searchFunction(board,i,j-1,str.substring(1),mask)){  
+            
+            //If the upper char in grid equals to the target. 
+            if ((j>0)&&(charGrid[i][j-1]==inputString.charAt(0))&&(shadowFlag[i][j-1]==false)){  
+            	shadowFlag[i][j-1]=true;  
+                if (searchInGrid(charGrid,i,j-1,inputString.substring(1),shadowFlag)){  
                     return true;  
                 }  
-                mask[i][j-1]=false;  
+                shadowFlag[i][j-1]=false;  
             }  
-            if ((j<board[0].length-1)&&(board[i][j+1]==str.charAt(0))&&(mask[i][j+1]==false)){  
-                mask[i][j+1]=true;  
-                if (searchFunction(board,i,j+1,str.substring(1),mask)){  
+            
+            //If the lower char in grid equals to the target.
+            if ((j<charGrid[0].length-1)&&(charGrid[i][j+1]==inputString.charAt(0))&&(shadowFlag[i][j+1]==false)){  
+            	shadowFlag[i][j+1]=true;  
+                if (searchInGrid(charGrid,i,j+1,inputString.substring(1),shadowFlag)){  
                     return true;  
                 }  
-                mask[i][j+1]=false;  
+                shadowFlag[i][j+1]=false;  
             }  
-        }  
+        }
+        
+        //All chars around don not meet target. Reture false
         return false;  
     }  
    
-static  boolean exist(char[][] board, String word) {  
-        // Start typing your C/C++ solution below  
-        // DO NOT write int main() function  
-        if (word.length()==0) {return false;}  
-               
-        for (int i=0;i<board.length;i++){  
-            for (int j=0;j<board[0].length;j++){  
-                if (word.charAt(0)==board[i][j]){  
-                    if (word.length()==1) {return true;}  
+static  boolean initialSearch(char[][] charGrid, String inputString) {  
+        
+        if (inputString.length()==0) {return false;} //Can be removed. We can judge if input in null in main()  
+        
+        //Initialize shadownFlag grid. 
+        //Find the first char in grid.
+        for (int i=0;i<charGrid.length;i++){  
+            for (int j=0;j<charGrid[0].length;j++){  
+                if (inputString.charAt(0)==charGrid[i][j]){  
+                    if (inputString.length()==1) {return true;}  //Can be removed safely. If input contains only one char and can be found in grid. Then return true directly. 
                     else{  
-                       boolean[][] mask=new boolean[board.length][board[0].length];
-                       for (int x=mask.length-1;x>=0;x--)
+                       boolean[][] shadowFlag=new boolean[charGrid.length][charGrid[0].length];
+                       for (int x=shadowFlag.length-1;x>=0;x--)
                        {
-                    	   for(int y=mask[0].length-1;y>=0;y--)
+                    	   for(int y=shadowFlag[0].length-1;y>=0;y--)
                     	   {
-                    		   mask[x][y]=new Boolean(false);
+                    		   shadowFlag[x][y]=new Boolean(false);
                     	   }
                        }
-                        mask[i][j]=true;  
-                        if (searchFunction(board,i,j,word.substring(1),mask)){  
+                       shadowFlag[i][j]=true;  
+                        if (searchInGrid(charGrid,i,j,inputString.substring(1),shadowFlag)){  
                             return true;  
                         }  
                     }  
