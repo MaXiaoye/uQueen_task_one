@@ -7,10 +7,10 @@ import java.io.InputStreamReader;
 public class main {
 
 	public static void main(String[] args) {
-		// Define the grid of chars 
-		char[][] charGrid={{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
+		// Define the Matrix of chars 
+		char[][] charMatrix={{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
 		BufferedReader strin=new BufferedReader(new InputStreamReader(System.in));  
-        
+		
         try {
         	while(true){
             System.out.print("Please input a String. Exit with null and Enter:\r\n");  
@@ -22,7 +22,7 @@ public class main {
 				System.out.print("Exit£¡");  
 				return;
 			}
-			boolean flag=search.initialSearch(charGrid, inputString);
+			boolean flag=search.initialSearch(charMatrix, inputString);
 			System.out.println(flag);
         	}
 		} catch (IOException e) {
